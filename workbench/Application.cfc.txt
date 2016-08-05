@@ -52,6 +52,7 @@ component{
 	// THE LOCATION OF EMBEDDED COLDBOX & MODULES
 	this.mappings[ "/coldbox" ] 	= COLDBOX_APP_ROOT_PATH & "coldbox";
 	this.mappings[ "/cborm" ] 	 	= this.mappings[ "/coldbox" ] & "/system/modules/cborm";
+	this.mappings[ "/tests" ] 	= COLDBOX_APP_ROOT_PATH & "workbench/tests";
 
 	// THE DATASOURCE FOR CONTENTBOX MANDATORY
 	this.datasource = "contentbox";

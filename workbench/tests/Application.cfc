@@ -13,7 +13,7 @@ component extends="TestProxy"{
 
 	// any mappings go here, we create one that points to the root called test.
 	this.mappings[ "/tests" ] = getDirectoryFromPath( getCurrentTemplatePath() );
-	rootPath = REReplaceNoCase( this.mappings[ "/tests" ], "/tests(\\|/)", "" );
+	rootPath = this.mappings[ "/cbapp" ];
 	this.mappings[ "/root" ]   = rootPath;
 
 	COLDBOX_APP_ROOT_PATH = rootPath & "/";
