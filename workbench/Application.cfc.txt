@@ -21,8 +21,8 @@ component{
 
 	this.datasources["contentbox"] = {
 		class: 'org.gjt.mm.mysql.Driver'
-		, connectionString: 'jdbc:mysql://localhost:3306/contentbox'
-
+		, connectionString: 'jdbc:mysql://localhost:3306/contentbox?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=true'
+		, username: 'root'
 		// optional settings
 		, blob:true // default: false
 		, clob:true // default: false
