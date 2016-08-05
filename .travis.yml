@@ -45,7 +45,7 @@ install:
   # Install our test database
   - mysql -u root -e 'create database contentbox;'
   # import database
-  - mysql -u root workbench/test-db.sql > contentbox
+  - mysql -u root contentbox < workbench/test-db.sql
 
   # Start up Commandbox
   - box server start port=49616 rewritesEnable=true openBrowser=false
