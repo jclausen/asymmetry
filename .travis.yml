@@ -49,7 +49,7 @@ install:
   - mysql -u root workbench/test-db.sql > contentbox
 
   # Start up Commandbox
-  - box server start port=49616 rewritesEnable=false openBrowser=false
+  - box server start port=49616 rewritesEnable=true openBrowser=false
 
 before_script:
 

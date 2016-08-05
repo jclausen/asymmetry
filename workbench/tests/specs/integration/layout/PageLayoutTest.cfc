@@ -41,7 +41,7 @@ component extends="coldbox.system.testing.BaseTestCase" appMapping="/"{
 			});
 
 			it( "Tests the standard page layout", function(){
-				URL.pageSlug="mypage";
+				URL.pageSlug="about";
 				var event = execute("page.index");
 				var rc = event.getCollection();
 				expect( rc ).toBeStruct();
