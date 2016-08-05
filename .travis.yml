@@ -29,7 +29,7 @@ install:
   - mkdir asymmetry
   - mv !(asymmetry) asymmetry/
   # Make sure to copy our Git directory
-  - mv ./.* /asymmetry/
+  - mv ./.* asymmetry/
   # Copy our workbench directory up to the root
   - cp -ar asymmetry/workbench ./
   # Move our TestProxy up to the root
