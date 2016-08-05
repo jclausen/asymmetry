@@ -1,0 +1,81 @@
+language: java
+sudo: required
+dist: trusty
+
+env:
+  global:
+    - RELEASE_VERSION="1.0.0"
+    - RELEASE_PLACEHOLDER="@release.number@"
+    - BUILD_PLACEHOLDER="@build.number@"
+
+addons:
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+
+before_install:
+  - sudo apt-key adv --keyserver keys.gnupg.net --recv 6DA70622
+  - sudo echo "deb http://downloads.ortussolutions.com/debs/noarch /" | sudo tee -a /etc/apt/sources.list.d/commandbox.list
+
+install:
+  # NPM Setup - Do this before we move our files so we can test compilation
+  - sudo apt-get install nodejs
+  - sudo apt-get install npm
+  - sudo npm install -g bower
+
+  # Move our working root to a theme directory
+  - mkdir asymmetry
+  - mv !(asymmetry) asymmetry/
+  # Make sure to copy our Git directory
+  - mv ./.* /asymmetry/
+  # Copy our workbench directory up to the root
+  - cp -ar asymmetry/workbench ./
+  # Move our TestProxy up to the root
+  - mv workbench/TestProxy.cfc ./
+
+  # Dependency Setup
+  - box install
+  - box install contentbox
+  - box install testbox
+  # Move our pre-configured App.cfc up to the root of the site, replacing our install version
+  - mv workbench/Application.cfc.txt ./Application.cfc
+  # Move our theme files in to our ContentBox module
+  - mv asymmetry ./modules/contentbox/themes/
+  # Install our test database
+  - mysql -u root -e 'create database contentbox;'
+  # import database
+  - mysql -u root workbench/test-db.sql > contentbox
+
+  # Start up Commandbox
+  - box server start port=49616 rewritesEnable=false openBrowser=false
+
+before_script:
+
+  - curl http://localhost:49616/
+
+script: > 
+    cd ./modules/contentbox/themes/asymmetry && npm install;
+    cd ./modules/contentbox/themes/asymmetry && bower install;
+    cd ./modules/contentbox/themes/asymmetry && grunt --completion=bash;
+    testResults="echo $(box testbox run runner=workbench/tests/runner.cfm)";
+    echo "$testResults";
+    if grep -i "\[Failures: [1-9][0-9]\?[0-9]\?\]\|\[Errors: [1-9][0-9]\?[0-9]\?\]\|<t[^>]*>\|<b[^>]*>" <<< $testResults;  then exit 1; fi
+
+after_success:
+  - sudo sed -i "s/$RELEASE_PLACEHOLDER/${RELEASE_VERSION}/g;" './modules/contentbox/themes/asymmetry/box.json'
+  - sleep 2
+  - sudo sed -i "s/$BUILD_PLACEHOLDER/${TRAVIS_BUILD_NUMBER}/g" './modules/contentbox/themes/asymmetry/box.json'
+  - sleep 2
+
+before_deploy:
+  - box server stop
+
+deploy:
+  on:
+    branch: 
+      - master
+  skip_cleanup: true
+  script: >
+    cd ./modules/contentbox/themes/asymmetry && 
