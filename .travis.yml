@@ -21,8 +21,8 @@ before_install:
 
 install:
   # NPM Setup - Do this before we move our files so we can test compilation
-  - sudo apt-get install nodejs
-  - sudo apt-get install npm
+  - sudo apt-get -y install nodejs
+  - sudo apt-get -y install npm
   - sudo npm install -g bower
 
   # Move our working root to a theme directory
