@@ -58,7 +58,7 @@ script: >
     cd ./modules/contentbox/themes/asymmetry && npm install;
     cd ./modules/contentbox/themes/asymmetry && bower install;
     cd ./modules/contentbox/themes/asymmetry && grunt --completion=bash;
-    testResults="echo $(box testbox run runner=workbench/tests/runner.cfm)";
+    testResults="echo $(box testbox run runner=http://localhost:49616/workbench/tests/runner.cfm)";
     echo "$testResults";
     if grep -i "\[Failures: [1-9][0-9]\?[0-9]\?\]\|\[Errors: [1-9][0-9]\?[0-9]\?\]\|<t[^>]*>\|<b[^>]*>" <<< $testResults;  then exit 1; fi
 
