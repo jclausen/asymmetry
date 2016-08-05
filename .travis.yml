@@ -20,9 +20,8 @@ before_install:
   - sudo echo "deb http://downloads.ortussolutions.com/debs/noarch /" | sudo tee -a /etc/apt/sources.list.d/commandbox.list
 
 install:
-  # NPM Setup - Do this before we move our files so we can test compilation
-  - sudo apt-get -y install nodejs
-  - sudo apt-get -y install npm
+  # Commandbox and NPM Installation - Do this before we move our files so we can test compilation
+  - sudo apt-get update && sudo apt-get --assume-yes install zip unzip commandbox nodejs npm
   - sudo npm install -g bower
 
   # Move our working root to a theme directory
